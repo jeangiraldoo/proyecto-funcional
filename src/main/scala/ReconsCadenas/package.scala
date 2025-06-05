@@ -1,7 +1,7 @@
 import Oraculo ._
 import Common ._
 
-package object ReconstCadenas {
+package object ReconsCadenas {
   val alfabeto = Seq('a', 'c', 'g', 't')
   
   def reconstruirCadenaIngenua(n: Int, oraculo: Oraculo): Seq[Char] = {
