@@ -8,7 +8,6 @@ package object ReconstCadenasPar {
 
     def productoCartesiano(sc1: Seq[Seq[Char]], sc2: Seq[Seq[Char]]): Seq[Seq[Char]] = {
       if (sc1.size * sc2.size >= umbral) {
-        // Paralelización usando task del paquete common
         val tareas = for (s1 <- sc1) yield task {
           for (s2 <- sc2) yield s1 ++ s2
         }
@@ -31,9 +30,9 @@ package object ReconstCadenasPar {
           productoCartesiano(sc, sc)
         }
 
-        // Filtrado paralelo usando task
+        
         val candidatasValidas = if (scK.size >= umbral) {
-          val numTareas = 4  // Dividir en 4 tareas paralelas
+          val numTareas = 4  
           val tamañoGrupo = (scK.size + numTareas - 1) / numTareas
           val grupos = scK.grouped(tamañoGrupo).toSeq
 
