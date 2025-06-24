@@ -81,4 +81,34 @@ package object ReconsCadenas {
     val sc1 = alfabeto.map(c => Seq(c)).filter(o)
     buscarCadena(sc1, 2)
   }
+
+  def reconstruirCadenaTurboMejorada(n: Int, o: Oraculo): Seq[Char] = {
+    def combinarYFiltrar(cadenasValidas: Set[String], tamanoSubcadena: Int): Set[String] = {
+      for {
+        primera <- cadenasValidas
+        segunda <- cadenasValidas
+        combinada = primera + segunda
+        if combinada.sliding(tamanoSubcadena).forall(cadenasValidas.contains)
+      } yield combinada
+    }
+
+    def construirCadena(candidatas: Set[String], tamanoActual: Int): String = {
+      if (tamanoActual >= n) {
+        candidatas.find(cadena =>
+          cadena.length == n && o(cadena.toSeq)
+        ).getOrElse("")
+      } else {
+        val combinadas = combinarYFiltrar(candidatas, tamanoActual)
+        val candidatasValidas = combinadas.filter(cadena => o(cadena.toSeq))
+        construirCadena(candidatasValidas, tamanoActual * 2)
+      }
+    }
+
+    val subcadenasInicialesValidas: Set[String] = alfabeto.flatMap(letra => {
+      val letraComoCadena = letra.toString
+      if (o(letraComoCadena.toSeq)) Some(letraComoCadena) else None
+    }).toSet
+
+    construirCadena(subcadenasInicialesValidas, 1).toList
+
 }

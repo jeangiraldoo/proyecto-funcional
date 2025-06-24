@@ -1,6 +1,7 @@
 import Oraculo._
 import Common._
 
+
 package object ReconstCadenasPar {
 
   def reconstruirCadenaTurboPar(umbral: Int)(n: Int, o: Oraculo): Seq[Char] = {
