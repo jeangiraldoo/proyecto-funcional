@@ -61,38 +61,38 @@ package object ReconstCadenasPar {
     buscarCadena(sc1, 2)
   }
 
-  def reconstruirCadenaParalela(umbral: Int)(longitudObjetivo: Int, oraculo: Oraculo): Seq[Char] = {
-    
-    def generarYFiltrarCadenas(conjuntoActual: Set[String], tamanoVentana: Int): Set[String] = {
-      val nuevasCadenasParalelas = for {
+  def reconstruirCadenaTurboMejoradaPar(umbral: Int)(n: Int, o: Oraculo): Seq[Char] = {
+
+    // Genera nuevas combinaciones de cadenas concatenando pares del conjunto actual.
+    // Solo conserva aquellas cuyas subcadenas de tamaño 'tamanoVentana' están todas en el conjunto original.
+    def generarCadenasValidasPorVentana(conjuntoActual: Set[String], tamanoVentana: Int): Set[String] = {
+      val combinacionesValidas = for {
         cadena1 <- conjuntoActual.par
         cadena2 <- conjuntoActual.par
         cadenaCombinada = cadena1 + cadena2
         if cadenaCombinada.sliding(tamanoVentana).forall(conjuntoActual.contains)
       } yield cadenaCombinada
 
-      nuevasCadenasParalelas.seq.toSet
+      combinacionesValidas.seq.toSet
     }
 
-    // Función recursiva que construye la cadena correcta expandiendo progresivamente la longitud.
+    // Construye recursivamente la cadena completa válida utilizando el oráculo.
     @scala.annotation.tailrec
-    def construirCadenaValida(conjuntoCadenas: Set[String], longitudActual: Int): String = {
-      if (longitudActual >= longitudObjetivo) {
-        // Buscar una cadena de longitud exacta que sea aceptada por el oráculo
-        conjuntoCadenas.find(cadena => cadena.length == longitudObjetivo && oraculo(cadena.toSeq)).getOrElse("")
+    def construirRecursivamente(conjuntoCandidatas: Set[String], longitudActual: Int): String = {
+      if (longitudActual >= n) {
+        conjuntoCandidatas.find(cadena => cadena.length == n && o(cadena.toSeq)).getOrElse("")
       } else {
-        val nuevasCadenasFiltradas = generarYFiltrarCadenas(conjuntoCadenas, longitudActual)
-        val candidatasParalelas = nuevasCadenasFiltradas.par
-        val candidatasValidas = candidatasParalelas.filter(cadena => oraculo(cadena.toSeq))
-        construirCadenaValida(candidatasValidas.seq.toSet, longitudActual * 2)
+        val nuevasCadenas = generarCadenasValidasPorVentana(conjuntoCandidatas, longitudActual)
+        val candidatasEvaluadas = nuevasCadenas.par.filter(cadena => o(cadena.toSeq))
+        construirRecursivamente(candidatasEvaluadas.seq.toSet, longitudActual * 2)
       }
     }
 
-    // Conjunto inicial con las letras individuales del alfabeto como cadenas
+    // Punto de partida: letras individuales del alfabeto como cadenas
     val conjuntoInicial: Set[String] = alfabeto.map(_.toString).toSet
 
-    // Iniciar la construcción a partir de longitud 1
-    construirCadenaValida(conjuntoInicial, 1).toList
+    // Iniciar construcción recursiva con longitud 1
+    construirRecursivamente(conjuntoInicial, 1).toList
   }
 
 
