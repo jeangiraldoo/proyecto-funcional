@@ -8,3 +8,9 @@ lazy val root = (project in file("."))
     libraryDependencies += "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4"
 
 )
+javaOptions ++= Seq(
+    "-Xmx8G",
+    "-XX:-UseGCOverheadLimit",
+    "-Xms1G",
+    "-XX:+UseG1GC",
+)
