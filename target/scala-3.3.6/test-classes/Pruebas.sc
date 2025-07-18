@@ -1,5 +1,5 @@
 import Oraculo._
-import ReconstCadenas._
+import ReconsCadenas._
 import scala.util.Random
 
 val random = new Random()
