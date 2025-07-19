@@ -80,4 +80,38 @@ package object ReconstCadenasPar {
       buscarCadena(sc1, 2)
     }
   }
+
+  def reconstruirCadenaTurboMejoradaPar(umbral: Int)(n: Int, o: Oraculo): Seq[Char] = {
+
+    // Genera nuevas combinaciones de cadenas concatenando pares del conjunto actual.
+    // Solo conserva aquellas cuyas subcadenas de tamaño 'tamanoVentana' están todas en el conjunto original.
+    def generarCadenasValidasPorVentana(conjuntoActual: Set[String], tamanoVentana: Int): Set[String] = {
+      val combinacionesValidas = for {
+        cadena1 <- conjuntoActual.par
+        cadena2 <- conjuntoActual.par
+        cadenaCombinada = cadena1 + cadena2
+        if cadenaCombinada.sliding(tamanoVentana).forall(conjuntoActual.contains)
+      } yield cadenaCombinada
+
+      combinacionesValidas.seq.toSet
+    }
+
+    // Construye recursivamente la cadena completa válida utilizando el oráculo.
+    @scala.annotation.tailrec
+    def construirRecursivamente(conjuntoCandidatas: Set[String], longitudActual: Int): String = {
+      if (longitudActual >= n) {
+        conjuntoCandidatas.find(cadena => cadena.length == n && o(cadena.toSeq)).getOrElse("")
+      } else {
+        val nuevasCadenas = generarCadenasValidasPorVentana(conjuntoCandidatas, longitudActual)
+        val candidatasEvaluadas = nuevasCadenas.par.filter(cadena => o(cadena.toSeq))
+        construirRecursivamente(candidatasEvaluadas.seq.toSet, longitudActual * 2)
+      }
+    }
+
+    // Punto de partida: letras individuales del alfabeto como cadenas
+    val conjuntoInicial: Set[String] = alfabeto.map(_.toString).toSet
+
+    // Iniciar construcción recursiva con longitud 1
+    construirRecursivamente(conjuntoInicial, 1).toList
+  }
 }
