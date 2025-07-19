@@ -19,32 +19,7 @@ package object ReconsCadenas {
       .getOrElse(Seq())
   }
 
-  def reconstruirCadenaIngenuaPar(n: Int, oraculo: Oraculo): Seq[Char] = {
-    def generateAll(length: Int): Seq[Seq[Char]] = {
-      if (length == 0) Seq(Seq())
-      else for {
-        shorter <- generateAll(length - 1)
-        letter <- alfabeto
-      } yield shorter :+ letter
-    }
-
-    var result: Option[Seq[Char]] = None
-
-    for {
-      len <- 1 to n
-      if result.isEmpty
-    } {
-      val candidates = generateAll(len)
-      val tasks = candidates.map(c => task(oraculo(c)))
-
-      for ((c, t) <- candidates.zip(tasks)
-           if result.isEmpty && c.length == n && t.join()) {
-        result = Some(c)
-      }
-    }
-
-    result.getOrElse(Seq())
-  }
+  
 
   def reconstruirCadenaTurbo(n: Int, o: Oraculo): Seq[Char] = {
     require(n > 0 && (n & (n - 1)) == 0)
