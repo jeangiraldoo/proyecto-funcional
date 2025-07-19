@@ -4,7 +4,7 @@ import Common ._
 package object ReconsCadenas {
   val alfabeto = Seq('a', 'c', 'g', 't')
 
-  def reconstruirCadenaIngenua(n: Int, oraculo: Oraculo): Seq[Char] = {
+  def reconstruirCadenaIngenuo(n: Int, oraculo: Oraculo): Seq[Char] = {
     def generateAll(length: Int): Seq[Seq[Char]] = {
       if (length == 0) Seq(Seq())
       else for {
