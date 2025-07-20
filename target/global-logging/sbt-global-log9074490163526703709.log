@@ -1,0 +1,28 @@
+[debug] > Exec(all {file:/C:/Users/jeanp/Documents/programming/University/proyecto-funcional/}root/products {file:/C:/Users/jeanp/Documents/programming/University/proyecto-funcional/}root/test:products, None, None)
+[debug] Evaluating tasks: Compile / products, Test / products
+[debug] Running task... Cancel: Signal, check cycles: false, forcegc: true
+[info] compiling 4 Scala sources to C:\Users\jeanp\Documents\programming\University\proyecto-funcional\target\scala-3.3.6\classes ...
+[error] -- [E008] Not Found Error: C:\Users\jeanp\Documents\programming\University\proyecto-funcional\src\main\scala\ReconsCadenas\package.scala:28:27 
+[error] 28 |          letra <- Oraculo.alfabeto
+[error]    |                   ^^^^^^^^^^^^^^^^
+[error]    |                   value alfabeto is not a member of Oraculo
+[error] -- [E007] Type Mismatch Error: C:\Users\jeanp\Documents\programming\University\proyecto-funcional\src\main\scala\ReconsCadenas\package.scala:33:20 
+[error] 33 |        nuevas.find(_.length == n).getOrElse(generar(k + 1, nuevas))
+[error]    |                    ^
+[error]    |Found:    (_$1 : Nothing)
+[error]    |Required: ?{ length: ? }
+[error]    |Note that implicit conversions were not tried because the result of an implicit conversion
+[error]    |must be more specific than ?{ length: ?{ == : [applied to (n) returning Boolean] } }
+[error]    |
+[error]    | longer explanation available when compiling with `-explain`
+[error] -- [E007] Type Mismatch Error: C:\Users\jeanp\Documents\programming\University\proyecto-funcional\src\main\scala\ReconsCadenas\package.scala:33:60 
+[error] 33 |        nuevas.find(_.length == n).getOrElse(generar(k + 1, nuevas))
+[error]    |                                                            ^^^^^^
+[error]    |                                       Found:    (nuevas : Set[Nothing])
+[error]    |                                       Required: Set[Seq[Char]]
+[error]    |
+[error]    | longer explanation available when compiling with `-explain`
+[error] three errors found
+[error] (Compile / compileIncremental) Compilation failed
+[error] Total time: 3 s, completed Jul 19, 2025, 5:31:46 PM
+[debug] > Exec(idea-shell, None, None)

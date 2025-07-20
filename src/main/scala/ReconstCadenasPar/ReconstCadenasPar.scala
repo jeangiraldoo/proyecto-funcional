@@ -3,6 +3,7 @@ import Common._
 import scala.collection.parallel.CollectionConverters._
 
 package object ReconstCadenasPar {
+  val alfabeto = Seq('a', 'c', 'g', 't')
   def reconstruirCadenaIngenuoPar(n: Int, oraculo: Oraculo): Seq[Char] = {
     def generateAll(length: Int): Seq[Seq[Char]] = {
       if (length == 0) Seq(Seq())

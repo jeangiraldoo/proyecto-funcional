@@ -13,13 +13,30 @@ package object ReconsCadenas {
       } yield shorter :+ letter
     }
 
-    (1 to n)
-      .flatMap(generateAll)
-      .find(candidate => oraculo(candidate) && candidate.length == n)
+    generateAll(n)
+      .find(candidate => oraculo(candidate))
       .getOrElse(Seq())
   }
 
-  
+  def reconstruirCadenaMejorado(n: Int, oraculo: Oraculo): Seq[Char] = {
+    def loop(k: Int, anteriores: Set[Seq[Char]]): Seq[Char] = {
+      if (k > n || anteriores.isEmpty) return Seq.empty
+
+      val candidatos = for {
+        prefijo <- anteriores
+        letra <- alfabeto
+        nuevo = prefijo :+ letra
+        if oraculo(nuevo)
+      } yield nuevo
+
+      candidatos.find(_.length == n) match {
+        case Some(resultado) => resultado
+        case None => loop(k + 1, candidatos) // Tail call
+      }
+    }
+
+    loop(1, Set(Seq.empty))
+  }
 
   def reconstruirCadenaTurbo(n: Int, o: Oraculo): Seq[Char] = {
     require(n > 0 && (n & (n - 1)) == 0)
