@@ -1,13 +1,13 @@
 [debug] [zinc] IncrementalCompile -----------
 [debug] IncrementalCompile.incrementalCompile
 [debug] previous = Stamps for: 11 products, 4 sources, 2 libraries
-[debug] current source = Set(${BASE}/src/main/scala/Common/package.scala, ${BASE}/src/main/scala/Oraculo/package.scala, ${BASE}/src/main/scala/ReconsCadenas/package.scala, ${BASE}/src/main/scala/ReconstCadenasPar/ReconstCadenasPar.scala)
-[debug] > initialChanges = InitialChanges(Changes(added = Set(), removed = Set(), changed = Set(${BASE}/src/main/scala/ReconsCadenas/package.scala), unmodified = ...),Set(${BASE}/target/scala-3.3.6/classes/Oraculo/package.class, ${BASE}/target/scala-3.3.6/classes/ReconsCadenas/package.class, ${BASE}/target/scala-3.3.6/classes/Common/package.class, ${BASE}/target/scala-3.3.6/classes/ReconstCadenasPar/package.class, ${BASE}/target/scala-3.3.6/classes/ReconsCadenas/package$.class),Set(),API Changes: Set())
+[debug] current source = Set(${BASE}/src/main/scala/Common/package.scala, ${BASE}/src/main/scala/Oraculo/package.scala, ${BASE}/src/main/scala/ReconstCadenas/package.scala, ${BASE}/src/main/scala/ReconstCadenasPar/ReconstCadenasPar.scala)
+[debug] > initialChanges = InitialChanges(Changes(added = Set(${BASE}/src/main/scala/ReconstCadenas/package.scala), removed = Set(${BASE}/src/main/scala/ReconsCadenas/package.scala), changed = Set(), unmodified = ...),Set(${BASE}/target/scala-3.3.6/classes/Oraculo/package.class, ${BASE}/target/scala-3.3.6/classes/ReconsCadenas/package.class, ${BASE}/target/scala-3.3.6/classes/Common/package.class, ${BASE}/target/scala-3.3.6/classes/ReconstCadenasPar/package.class, ${BASE}/target/scala-3.3.6/classes/ReconsCadenas/package$.class),Set(),API Changes: Set())
 [debug] 
 [debug] Initial source changes:
-[debug] 	removed: Set()
-[debug] 	added: Set()
-[debug] 	modified: Set(${BASE}/src/main/scala/ReconsCadenas/package.scala)
+[debug] 	removed: Set(${BASE}/src/main/scala/ReconsCadenas/package.scala)
+[debug] 	added: Set(${BASE}/src/main/scala/ReconstCadenas/package.scala)
+[debug] 	modified: Set()
 [debug] Invalidated products: Set(${BASE}/target/scala-3.3.6/classes/Oraculo/package.class, ${BASE}/target/scala-3.3.6/classes/ReconsCadenas/package.class, ${BASE}/target/scala-3.3.6/classes/Common/package.class, ${BASE}/target/scala-3.3.6/classes/ReconstCadenasPar/package.class, ${BASE}/target/scala-3.3.6/classes/ReconsCadenas/package$.class)
 [debug] External API changes: API Changes: Set()
 [debug] Modified binary dependencies: Set()
@@ -16,15 +16,16 @@
 [debug] 	product: Set(${BASE}/src/main/scala/Common/package.scala, ${BASE}/src/main/scala/ReconstCadenasPar/ReconstCadenasPar.scala, ${BASE}/src/main/scala/Oraculo/package.scala, ${BASE}/src/main/scala/ReconsCadenas/package.scala)
 [debug] 	binary dep: Set()
 [debug] 	external source: Set()
-[debug] all 4 sources are invalidated
+[debug] All initially invalidated classes: Set(ReconsCadenas.package)
+[debug] All initially invalidated sources:Set(${BASE}/src/main/scala/Common/package.scala, ${BASE}/src/main/scala/ReconstCadenas/package.scala, ${BASE}/src/main/scala/ReconstCadenasPar/ReconstCadenasPar.scala, ${BASE}/src/main/scala/Oraculo/package.scala, ${BASE}/src/main/scala/ReconsCadenas/package.scala)
 [debug] Initial set of included nodes: ReconsCadenas.package
 [debug] Recompiling all sources: number of invalidated sources > 50.0 percent of all sources
 [debug] compilation cycle 1
 [info] compiling 4 Scala sources to C:\Users\jeanp\Documents\programming\University\proyecto-funcional\target\scala-3.3.6\classes ...
 [debug] Returning already retrieved and compiled bridge: C:\Users\jeanp\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala3-sbt-bridge\3.3.6\scala3-sbt-bridge-3.3.6.jar.
-[debug] [zinc] Running cached compiler 43ac68f7 for Scala Compiler version 3.3.6
+[debug] [zinc] Running cached compiler 1eba17eb for Scala Compiler version 3.3.6
 [debug] [zinc] The Scala compiler is invoked with:
 [debug] 	-classpath
 [debug] 	C:\Users\jeanp\Documents\programming\University\proyecto-funcional\target\scala-3.3.6\classes;C:\Users\jeanp\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala3-library_3\3.3.6\scala3-library_3-3.3.6.jar;C:\Users\jeanp\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-lang\modules\scala-parallel-collections_3\1.0.4\scala-parallel-collections_3-1.0.4.jar;C:\Users\jeanp\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala-library\2.13.16\scala-library-2.13.16.jar
-[debug] Scala compilation took 2.2599826 s
+[debug] Scala compilation took 0.9304493 s
 [info] done compiling
