@@ -3,5 +3,5 @@
 [debug] Running task... Cancel: Signal, check cycles: false, forcegc: true
 [info] compiling 4 Scala sources to C:\Users\jeanp\Documents\programming\University\proyecto-funcional\target\scala-3.3.6\classes ...
 [info] done compiling
-[success] Total time: 1 s, completed Jul 20, 2025, 6:20:50 PM
+[success] Total time: 9 s, completed Jul 20, 2025, 6:34:45 PM
 [debug] > Exec(idea-shell, None, None)

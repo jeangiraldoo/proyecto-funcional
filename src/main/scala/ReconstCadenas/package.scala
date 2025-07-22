@@ -5,17 +5,24 @@ package object ReconstCadenas {
   val alfabeto = Seq('a', 'c', 'g', 't')
 
   def reconstruirCadenaIngenuo(n: Int, oraculo: Oraculo): Seq[Char] = {
-    def generateAll(length: Int): Seq[Seq[Char]] = {
-      if (length == 0) Seq(Seq())
-      else for {
-        shorter <- generateAll(length - 1)
-        letter <- alfabeto
-      } yield shorter :+ letter
-    }
+    def loop(currentLevelSequences: List[Seq[Char]]): Seq[Char] = {
+      if (currentLevelSequences.isEmpty) return Seq.empty
 
-    generateAll(n)
-      .find(candidate => oraculo(candidate))
-      .getOrElse(Seq())
+      val valid_sequence = currentLevelSequences.filter(oraculo)
+
+      val target_length_sequence = valid_sequence.find(_.length == n)
+      target_length_sequence match {
+        case Some(solution) => solution
+        case None =>
+          val nextLevelSequences = for {
+            seq <- valid_sequence
+            ch <- alfabeto
+          } yield seq :+ ch
+
+          loop(nextLevelSequences)
+      }
+    }
+    loop(List(Seq.empty))
   }
 
   def reconstruirCadenaMejorado(n: Int, oraculo: Oraculo): Seq[Char] = {

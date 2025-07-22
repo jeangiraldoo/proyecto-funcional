@@ -24,7 +24,7 @@ val or_2=crearOraculo(costoOraculo)(sec2)
 val or_3=crearOraculo(costoOraculo)(sec3)
 
 reconstruirCadenaIngenuo(sec1.length, or_1)
-reconstruirCadenaIngenuo(sec2.length, or_2)
+reconstruirCadenaIngenuo(sec3.length, or_3)
 reconstruirCadenaIngenuo(sec3.length, or_3)
 
 def secsCortasParaPruebas(n:Int):Seq[Seq[Char]] = for {
@@ -63,10 +63,10 @@ def pruebasTurboMejorada (ss:Seq[Seq[Char]]) = for {
 
 
 
-def pruebasTurboAcelerada(ss:Seq[Seq[Char]]) = for {
-  s <- ss
-  o = crearOraculo(costoOraculo)(s)
-} yield (s.length, s,reconstruirCadenaTurboAcelerada(s.length,o))
+//def pruebasTurboAcelerada(ss:Seq[Seq[Char]]) = for {
+//  s <- ss
+//  o = crearOraculo(costoOraculo)(s)
+//} yield (s.length, s,reconstruirCadenaTurboAcelerada(s.length,o))
 
 
 // Secuencias para pruebas
@@ -118,13 +118,13 @@ reconstruirCadenaTurbo(s1_8.length, crearOraculo(costoOraculo)(s1_8))
 reconstruirCadenaTurbo(s2_8.length, crearOraculo(costoOraculo)(s2_8))
 reconstruirCadenaTurboMejorada(s1_8.length, crearOraculo(costoOraculo)(s1_8))
 reconstruirCadenaTurboMejorada(s2_8.length, crearOraculo(costoOraculo)(s2_8))
-reconstruirCadenaTurboAcelerada(s1_8.length, crearOraculo(costoOraculo)(s1_8))
-reconstruirCadenaTurboAcelerada(s2_8.length, crearOraculo(costoOraculo)(s2_8))
+//reconstruirCadenaTurboAcelerada(s1_8.length, crearOraculo(costoOraculo)(s1_8))
+//reconstruirCadenaTurboAcelerada(s2_8.length, crearOraculo(costoOraculo)(s2_8))
 // secuencias de longitud 16
 reconstruirCadenaMejorado(s1_16.length, crearOraculo(costoOraculo)(s1_16))
 reconstruirCadenaTurbo(s1_16.length, crearOraculo(costoOraculo)(s1_16))
 reconstruirCadenaTurboMejorada(s1_16.length, crearOraculo(costoOraculo)(s1_16))
-reconstruirCadenaTurboAcelerada(s1_16.length, crearOraculo(costoOraculo)(s1_16))
+//reconstruirCadenaTurboAcelerada(s1_16.length, crearOraculo(costoOraculo)(s1_16))
 
 // secuencias de longitud 32
 reconstruirCadenaMejorado(s1_32.length, crearOraculo(costoOraculo)(s1_32))
@@ -136,9 +136,9 @@ reconstruirCadenaTurbo(s3_32.length, crearOraculo(costoOraculo)(s3_32))
 reconstruirCadenaTurboMejorada(s1_32.length, crearOraculo(costoOraculo)(s1_32))
 reconstruirCadenaTurboMejorada(s2_32.length, crearOraculo(costoOraculo)(s2_32))
 reconstruirCadenaTurboMejorada(s3_32.length, crearOraculo(costoOraculo)(s3_32))
-reconstruirCadenaTurboAcelerada(s1_32.length, crearOraculo(costoOraculo)(s1_32))
-reconstruirCadenaTurboAcelerada(s2_32.length, crearOraculo(costoOraculo)(s2_32))
-reconstruirCadenaTurboAcelerada(s3_32.length, crearOraculo(costoOraculo)(s3_32))
+//reconstruirCadenaTurboAcelerada(s1_32.length, crearOraculo(costoOraculo)(s1_32))
+//reconstruirCadenaTurboAcelerada(s2_32.length, crearOraculo(costoOraculo)(s2_32))
+//reconstruirCadenaTurboAcelerada(s3_32.length, crearOraculo(costoOraculo)(s3_32))
 
 
 // secuencias de longitud 64
@@ -151,9 +151,9 @@ reconstruirCadenaTurbo(s3_64.length, crearOraculo(costoOraculo)(s3_64))
 reconstruirCadenaTurboMejorada(s1_64.length, crearOraculo(costoOraculo)(s1_64))
 reconstruirCadenaTurboMejorada(s2_64.length, crearOraculo(costoOraculo)(s2_64))
 reconstruirCadenaTurboMejorada(s3_64.length, crearOraculo(costoOraculo)(s3_64))
-reconstruirCadenaTurboAcelerada(s1_64.length, crearOraculo(costoOraculo)(s1_64))
-reconstruirCadenaTurboAcelerada(s2_64.length, crearOraculo(costoOraculo)(s2_64))
-reconstruirCadenaTurboAcelerada(s3_64.length, crearOraculo(costoOraculo)(s3_64))
+//reconstruirCadenaTurboAcelerada(s1_64.length, crearOraculo(costoOraculo)(s1_64))
+//reconstruirCadenaTurboAcelerada(s2_64.length, crearOraculo(costoOraculo)(s2_64))
+//reconstruirCadenaTurboAcelerada(s3_64.length, crearOraculo(costoOraculo)(s3_64))
 
 // secuencias de longitud 128
 reconstruirCadenaMejorado(s1_128.length, crearOraculo(costoOraculo)(s1_128))
@@ -165,9 +165,9 @@ reconstruirCadenaTurbo(s3_128.length, crearOraculo(costoOraculo)(s3_128))
 reconstruirCadenaTurboMejorada(s1_128.length, crearOraculo(costoOraculo)(s1_128))
 reconstruirCadenaTurboMejorada(s2_128.length, crearOraculo(costoOraculo)(s2_128))
 reconstruirCadenaTurboMejorada(s3_128.length, crearOraculo(costoOraculo)(s3_128))
-reconstruirCadenaTurboAcelerada(s1_128.length, crearOraculo(costoOraculo)(s1_128))
-reconstruirCadenaTurboAcelerada(s2_128.length, crearOraculo(costoOraculo)(s2_128))
-reconstruirCadenaTurboAcelerada(s3_128.length, crearOraculo(costoOraculo)(s3_128))
+//reconstruirCadenaTurboAcelerada(s1_128.length, crearOraculo(costoOraculo)(s1_128))
+//reconstruirCadenaTurboAcelerada(s2_128.length, crearOraculo(costoOraculo)(s2_128))
+//reconstruirCadenaTurboAcelerada(s3_128.length, crearOraculo(costoOraculo)(s3_128))
 
 // secuencias de longitud 256
 reconstruirCadenaMejorado(s1_256.length, crearOraculo(costoOraculo)(s1_256))
@@ -179,9 +179,9 @@ reconstruirCadenaTurbo(s3_256.length, crearOraculo(costoOraculo)(s3_256))
 reconstruirCadenaTurboMejorada(s1_256.length, crearOraculo(costoOraculo)(s1_256))
 reconstruirCadenaTurboMejorada(s2_256.length, crearOraculo(costoOraculo)(s2_256))
 reconstruirCadenaTurboMejorada(s3_256.length, crearOraculo(costoOraculo)(s3_256))
-reconstruirCadenaTurboAcelerada(s1_256.length, crearOraculo(costoOraculo)(s1_256))
-reconstruirCadenaTurboAcelerada(s2_256.length, crearOraculo(costoOraculo)(s2_256))
-reconstruirCadenaTurboAcelerada(s3_256.length, crearOraculo(costoOraculo)(s3_256))
+//reconstruirCadenaTurboAcelerada(s1_256.length, crearOraculo(costoOraculo)(s1_256))
+//reconstruirCadenaTurboAcelerada(s2_256.length, crearOraculo(costoOraculo)(s2_256))
+//reconstruirCadenaTurboAcelerada(s3_256.length, crearOraculo(costoOraculo)(s3_256))
 
 // secuencias de longitud 512
 reconstruirCadenaMejorado(s1_512.length, crearOraculo(costoOraculo)(s1_512))
@@ -193,9 +193,9 @@ reconstruirCadenaTurbo(s3_512.length, crearOraculo(costoOraculo)(s3_512))
 reconstruirCadenaTurboMejorada(s1_512.length, crearOraculo(costoOraculo)(s1_512))
 reconstruirCadenaTurboMejorada(s2_512.length, crearOraculo(costoOraculo)(s2_512))
 reconstruirCadenaTurboMejorada(s3_512.length, crearOraculo(costoOraculo)(s3_512))
-reconstruirCadenaTurboAcelerada(s1_512.length, crearOraculo(costoOraculo)(s1_512))
-reconstruirCadenaTurboAcelerada(s2_512.length, crearOraculo(costoOraculo)(s2_512))
-reconstruirCadenaTurboAcelerada(s3_512.length, crearOraculo(costoOraculo)(s3_512))
+//reconstruirCadenaTurboAcelerada(s1_512.length, crearOraculo(costoOraculo)(s1_512))
+//reconstruirCadenaTurboAcelerada(s2_512.length, crearOraculo(costoOraculo)(s2_512))
+//reconstruirCadenaTurboAcelerada(s3_512.length, crearOraculo(costoOraculo)(s3_512))
 
 
 // secuencias de longitud 1024
@@ -208,9 +208,9 @@ reconstruirCadenaTurbo(s3_1024.length, crearOraculo(costoOraculo)(s3_1024))
 reconstruirCadenaTurboMejorada(s1_1024.length, crearOraculo(costoOraculo)(s1_1024))
 reconstruirCadenaTurboMejorada(s2_1024.length, crearOraculo(costoOraculo)(s2_1024))
 reconstruirCadenaTurboMejorada(s3_1024.length, crearOraculo(costoOraculo)(s3_1024))
-reconstruirCadenaTurboAcelerada(s1_1024.length, crearOraculo(costoOraculo)(s1_1024))
-reconstruirCadenaTurboAcelerada(s2_1024.length, crearOraculo(costoOraculo)(s2_1024))
-reconstruirCadenaTurboAcelerada(s3_1024.length, crearOraculo(costoOraculo)(s3_1024))
+//reconstruirCadenaTurboAcelerada(s1_1024.length, crearOraculo(costoOraculo)(s1_1024))
+//reconstruirCadenaTurboAcelerada(s2_1024.length, crearOraculo(costoOraculo)(s2_1024))
+//reconstruirCadenaTurboAcelerada(s3_1024.length, crearOraculo(costoOraculo)(s3_1024))
 
 // Pruebas por lotes
 
@@ -263,14 +263,14 @@ pruebasTurboMejorada(ss2_1024)
 pruebasTurboMejorada(ss2_2048)
 pruebasTurboMejorada(ss2_4096)
 
-pruebasTurboAcelerada(ss1_10)
-pruebasTurboAcelerada(ss1_16.slice(0,10))
-pruebasTurboAcelerada(ss1_16.slice(0,11))
-pruebasTurboAcelerada(ss1_16.slice(0,12))
-pruebasTurboAcelerada(ss1_16.slice(0,13))
-pruebasTurboAcelerada(ss1_16.slice(0,14))
-pruebasTurboAcelerada(ss1_16.slice(0,15))
-pruebasTurboAcelerada(ss1_16)
-pruebasTurboAcelerada(ss2_1024)
-pruebasTurboAcelerada(ss2_2048)
-pruebasTurboAcelerada(ss2_4096)
+//pruebasTurboAcelerada(ss1_10)
+//pruebasTurboAcelerada(ss1_16.slice(0,10))
+//pruebasTurboAcelerada(ss1_16.slice(0,11))
+//pruebasTurboAcelerada(ss1_16.slice(0,12))
+//pruebasTurboAcelerada(ss1_16.slice(0,13))
+//pruebasTurboAcelerada(ss1_16.slice(0,14))
+//pruebasTurboAcelerada(ss1_16.slice(0,15))
+//pruebasTurboAcelerada(ss1_16)
+//pruebasTurboAcelerada(ss2_1024)
+//pruebasTurboAcelerada(ss2_2048)
+//pruebasTurboAcelerada(ss2_4096)
