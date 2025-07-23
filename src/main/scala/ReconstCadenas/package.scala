@@ -25,24 +25,22 @@ package object ReconstCadenas {
     loop(List(Seq.empty))
   }
 
-  def reconstruirCadenaMejorado(n: Int, oraculo: Oraculo): Seq[Char] = {
-    def loop(k: Int, anteriores: Set[Seq[Char]]): Seq[Char] = {
-      if (k > n || anteriores.isEmpty) return Seq.empty
-
-      val candidatos = for {
-        prefijo <- anteriores
-        letra <- alfabeto
-        nuevo = prefijo :+ letra
-        if oraculo(nuevo)
-      } yield nuevo
-
-      candidatos.find(_.length == n) match {
-        case Some(resultado) => resultado
-        case None => loop(k + 1, candidatos) // Tail call
-      }
+  def reconstruirCadenaMejorado(n: Int, oracle: Oraculo): Seq[Char] = {
+    @annotation.tailrec
+    def loop(stack: Seq[Seq[Char]]): Seq[Char] = stack match {
+      case Seq() => Seq.empty
+      case current +: rest =>
+        if (current.length == n) current.reverse
+        else {
+          val next = alfabeto.view
+            .map(c => c +: current)
+            .filter(oracle)
+            .toSeq
+          loop(next ++ rest)
+        }
     }
 
-    loop(1, Set(Seq.empty))
+    loop(Seq(Seq.empty))
   }
 
   def reconstruirCadenaTurbo(n: Int, o: Oraculo): Seq[Char] = {

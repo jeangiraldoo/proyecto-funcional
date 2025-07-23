@@ -1,8 +1,8 @@
 [debug] > Exec(all {file:/C:/Users/jeanp/Documents/programming/University/proyecto-funcional/}root/products {file:/C:/Users/jeanp/Documents/programming/University/proyecto-funcional/}root/test:products, None, None)
 [debug] Evaluating tasks: Compile / products, Test / products
 [debug] Running task... Cancel: Signal, check cycles: false, forcegc: true
-[info] compiling 2 Scala sources to C:\Users\jeanp\Documents\programming\University\proyecto-funcional\target\scala-3.3.6\classes ...
+[info] compiling 1 Scala source to C:\Users\jeanp\Documents\programming\University\proyecto-funcional\target\scala-3.3.6\classes ...
 [info] done compiling
 [debug] Forcing garbage collection...
-[success] Total time: 2 s, completed Jul 22, 2025, 5:06:09 PM
+[success] Total time: 2 s, completed Jul 22, 2025, 11:43:03 PM
 [debug] > Exec(idea-shell, None, None)

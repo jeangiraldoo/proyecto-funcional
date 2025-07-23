@@ -4,5 +4,6 @@
 [info] compiling 2 Scala sources to C:\Users\jeanp\Documents\programming\University\proyecto-funcional\target\scala-3.3.6\classes ...
 [info] done compiling
 [debug] Forcing garbage collection...
-[success] Total time: 2 s, completed Jul 22, 2025, 5:06:09 PM
+[success] Total time: 19 s, completed Jul 23, 2025, 2:33:28 PM
 [debug] > Exec(idea-shell, None, None)
+[warn] In the last 20 seconds, 9.198 (48.1%) were spent in GC. [Heap: 0.93GB free of 1.00GB, max 8.00GB] Consider increasing the JVM heap using `-Xmx` or try a different collector, e.g. `-XX:+UseG1GC`, for better performance.

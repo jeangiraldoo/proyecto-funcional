@@ -2,13 +2,13 @@
 [debug] IncrementalCompile.incrementalCompile
 [debug] previous = Stamps for: 11 products, 4 sources, 2 libraries
 [debug] current source = Set(${BASE}/src/main/scala/Common/package.scala, ${BASE}/src/main/scala/Oraculo/package.scala, ${BASE}/src/main/scala/ReconstCadenas/package.scala, ${BASE}/src/main/scala/ReconstCadenasPar/ReconstCadenasPar.scala)
-[debug] > initialChanges = InitialChanges(Changes(added = Set(), removed = Set(), changed = Set(${BASE}/src/main/scala/ReconstCadenas/package.scala), unmodified = ...),Set(${BASE}/target/scala-3.3.6/classes/ReconstCadenas/package$.class, ${BASE}/target/scala-3.3.6/classes/ReconstCadenas/package.class, ${BASE}/target/scala-3.3.6/classes/ReconstCadenasPar/package.class),Set(),API Changes: Set())
+[debug] > initialChanges = InitialChanges(Changes(added = Set(), removed = Set(), changed = Set(${BASE}/src/main/scala/ReconstCadenas/package.scala), unmodified = ...),Set(${BASE}/target/scala-3.3.6/classes/ReconstCadenas/package.class, ${BASE}/target/scala-3.3.6/classes/ReconstCadenasPar/package.class, ${BASE}/target/scala-3.3.6/classes/ReconstCadenas/package$.class),Set(),API Changes: Set())
 [debug] 
 [debug] Initial source changes:
 [debug] 	removed: Set()
 [debug] 	added: Set()
 [debug] 	modified: Set(${BASE}/src/main/scala/ReconstCadenas/package.scala)
-[debug] Invalidated products: Set(${BASE}/target/scala-3.3.6/classes/ReconstCadenas/package$.class, ${BASE}/target/scala-3.3.6/classes/ReconstCadenas/package.class, ${BASE}/target/scala-3.3.6/classes/ReconstCadenasPar/package.class)
+[debug] Invalidated products: Set(${BASE}/target/scala-3.3.6/classes/ReconstCadenas/package.class, ${BASE}/target/scala-3.3.6/classes/ReconstCadenasPar/package.class, ${BASE}/target/scala-3.3.6/classes/ReconstCadenas/package$.class)
 [debug] External API changes: API Changes: Set()
 [debug] Modified binary dependencies: Set()
 [debug] Initial directly invalidated classes: Set(ReconstCadenas.package)
@@ -22,17 +22,17 @@
 [debug] compilation cycle 1
 [info] compiling 2 Scala sources to C:\Users\jeanp\Documents\programming\University\proyecto-funcional\target\scala-3.3.6\classes ...
 [debug] Returning already retrieved and compiled bridge: C:\Users\jeanp\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala3-sbt-bridge\3.3.6\scala3-sbt-bridge-3.3.6.jar.
-[debug] [zinc] Running cached compiler 7c34df2a for Scala Compiler version 3.3.6
+[debug] [zinc] Running cached compiler 6ecdc873 for Scala Compiler version 3.3.6
 [debug] [zinc] The Scala compiler is invoked with:
 [debug] 	-classpath
 [debug] 	C:\Users\jeanp\Documents\programming\University\proyecto-funcional\target\scala-3.3.6\classes;C:\Users\jeanp\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala3-library_3\3.3.6\scala3-library_3-3.3.6.jar;C:\Users\jeanp\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-lang\modules\scala-parallel-collections_3\1.0.4\scala-parallel-collections_3-1.0.4.jar;C:\Users\jeanp\AppData\Local\Coursier\Cache\v1\https\repo1.maven.org\maven2\org\scala-lang\scala-library\2.13.16\scala-library-2.13.16.jar
-[debug] Scala compilation took 1.0154002 s
+[debug] Scala compilation took 1.7595332 s
 [info] done compiling
 [debug] Invalidating (transitively) by inheritance from ReconstCadenas.package...
 [debug] Initial set of included nodes: ReconstCadenas.package
 [debug] Invalidated by transitive inheritance dependency: Set(ReconstCadenas.package)
-[debug] Change NamesChange(ReconstCadenas.package,ModifiedNames(changes = UsedName(reconstruirCadenaIngenuo2,[Default]))) invalidates 1 classes due to The ReconstCadenas.package has the following regular definitions changed:
-[debug] 	UsedName(reconstruirCadenaIngenuo2,[Default]).
+[debug] Change NamesChange(ReconstCadenas.package,ModifiedNames(changes = UsedName(reconstruirCadenaMejorado3,[Default]), UsedName(reconstruirCadenaMejoradoBest2,[Default]), UsedName(reconstruirCadenaMejorado1,[Default]), UsedName(reconstruirCadenaMejorado5,[Default]), UsedName(reconstruirCadenaMejoradoMejor,[Default]))) invalidates 1 classes due to The ReconstCadenas.package has the following regular definitions changed:
+[debug] 	UsedName(reconstruirCadenaMejorado3,[Default]), UsedName(reconstruirCadenaMejoradoBest2,[Default]), UsedName(reconstruirCadenaMejorado1,[Default]), UsedName(reconstruirCadenaMejorado5,[Default]), UsedName(reconstruirCadenaMejoradoMejor,[Default]).
 [debug]   > by transitive inheritance: Set(ReconstCadenas.package)
 [debug]   > 
 [debug]   > 

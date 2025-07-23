@@ -31,6 +31,34 @@ package object ReconstCadenasPar {
     result.getOrElse(Seq())
   }
 
+  def reconstruirCadenaIngenuoPar2(n: Int, oraculo: Oraculo): Seq[Char] = {
+    def loop(currentLevelSequences: List[Seq[Char]]): Seq[Char] = {
+      if (currentLevelSequences.isEmpty) return Seq.empty
+
+      // Launch oracle checks in parallel
+      val (left, right) = currentLevelSequences.splitAt(currentLevelSequences.length / 2)
+      val (valid1, valid2) = parallel(
+        left.filter(oraculo),
+        right.filter(oraculo)
+      )
+      val validSequences = valid1 ++ valid2
+
+      // Try to find the solution of the exact desired length
+      validSequences.find(_.length == n) match {
+        case Some(solution) => solution
+        case None =>
+          val nextLevelSequences = for {
+            seq <- validSequences
+            ch <- alfabeto
+          } yield seq :+ ch
+
+          loop(nextLevelSequences)
+      }
+    }
+
+    loop(List(Seq.empty))
+  }
+
   def reconstruirCadenaTurboPar(umbral: Int)(n: Int, o: Oraculo): Seq[Char] = {
     require(n > 0 && (n & (n - 1)) == 0)
 
