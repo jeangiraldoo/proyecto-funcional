@@ -1,5 +1,6 @@
 import Oraculo ._
 import Common ._
+import ArbolSufijos._
 
 package object ReconstCadenas {
   val alfabeto = Seq('a', 'c', 'g', 't')
@@ -99,5 +100,68 @@ package object ReconstCadenas {
     construirCadena(subcadenasInicialesValidas, 1).toList
 }
 
-  
+def reconstruirCadenaTurboAcelerada(n: Int, o: Oraculo): Seq[Char] = {
+    require(n > 0 && (n & (n - 1)) == 0)
+
+    def buscarCadena(currentTrie: Trie, current_k: Int): Seq[Char] = {
+      if (current_k == n) {
+        val posiblesCadenasFinales = obtenerCadenasDeLongitudN(currentTrie, Seq(' '), n).filter(_.length == n)
+        posiblesCadenasFinales.find(s => o(s)).getOrElse(Seq.empty)
+      } else {
+        def getStringsFromTrie(t: Trie, currentPath: Seq[Char], len: Int): Set[Seq[Char]] = {
+          t match {
+            case Nodo(charNode, marcadaNode, hijos) =>
+              val newPath = if (charNode == ' ') currentPath else currentPath :+ charNode
+              hijos.flatMap(h => getStringsFromTrie(h, newPath, len)).toSet ++
+                (if (newPath.length == len && pertenece(newPath.tail, currentTrie)) Set(newPath.tail) else Set.empty)
+            case Hoja(charLeaf, marcadaLeaf) =>
+              val newPath = currentPath :+ charLeaf
+              if (newPath.length == len && pertenece(newPath.tail, currentTrie)) Set(newPath.tail) else Set.empty
+          }
+        }
+        val cadenasValidasActuales = getStringsFromTrie(currentTrie, Seq(' '), current_k)
+
+        val combinadas = for {
+          s1 <- cadenasValidasActuales.toSeq
+          s2 <- cadenasValidasActuales.toSeq
+          combinada = s1 ++ s2
+          if combinada.length == current_k * 2 &&
+             combinada.sliding(current_k).forall(sub => ArbolDeSufijos.pertenece(sub, currentTrie))
+        } yield combinada
+
+        val candidatasValidasNivelSiguiente = combinadas.filter(o)
+        val nextTrie = ArbolDeSufijos.arbolDeSufijos(candidatasValidasNivelSiguiente.toList)
+        buscarCadena(nextTrie, current_k * 2)
+      }
+    }
+
+    val sc1 = alfabeto.map(c => Seq(c)).filter(o)
+    val trieInicial = ArbolDeSufijos.arbolDeSufijos(sc1.toList)
+
+    if (n == 1) {
+      sc1.headOption.getOrElse(Seq.empty)
+    } else {
+      buscarCadena(trieInicial, 2)
+    }
+  }
+
+  private def obtenerCadenasDeLongitudN(t: Trie, currentPath: Seq[Char], targetLength: Int): List[Seq[Char]] = {
+    t match {
+      case Nodo(charNode, marcadaNode, hijos) =>
+        val newPath = if (charNode == ' ') currentPath else currentPath :+ charNode
+        if (newPath.length == targetLength && marcadaNode) {
+          List(newPath.tail) ++ hijos.flatMap(h => obtenerCadenasDeLongitudN(h, newPath, targetLength))
+        } else {
+          hijos.flatMap(h => obtenerCadenasDeLongitudN(h, newPath, targetLength))
+        }
+      case Hoja(charLeaf, marcadaLeaf) =>
+        val newPath = currentPath :+ charLeaf
+        if (newPath.length == targetLength && marcadaLeaf) {
+          List(newPath.tail)
+        } else {
+          List.empty
+        }
+    }
+  }
+}  
 }
