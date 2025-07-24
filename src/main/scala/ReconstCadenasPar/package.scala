@@ -4,61 +4,119 @@ import scala.collection.parallel.CollectionConverters._
 
 package object ReconstCadenasPar {
   val alfabeto = Seq('a', 'c', 'g', 't')
-  def reconstruirCadenaIngenuoPar(n: Int, oraculo: Oraculo): Seq[Char] = {
-    def generateAll(length: Int): Seq[Seq[Char]] = {
-      if (length == 0) Seq(Seq())
-      else for {
-        shorter <- generateAll(length - 1)
-        letter <- alfabeto
-      } yield shorter :+ letter
-    }
 
-    var result: Option[Seq[Char]] = None
+  def reconstruirCadenaIngenuoPar(umbral: Int)(n: Int, oraculo: Oraculo): Seq[Char] = {
+    def expand(seqs: List[Seq[Char]]): List[Seq[Char]] =
+      for {
+        seq <- seqs
+        ch <- alfabeto
+      } yield seq :+ ch
 
-    for {
-      len <- 1 to n
-      if result.isEmpty
-    } {
-      val candidates = generateAll(len)
-      val tasks = candidates.map(c => task(oraculo(c)))
-
-      for ((c, t) <- candidates.zip(tasks)
-           if result.isEmpty && c.length == n && t.join()) {
-        result = Some(c)
+    def parallelFilter(seqs: List[Seq[Char]]): List[Seq[Char]] = {
+      if (seqs.length >= umbral) {
+        val quarter = seqs.length / 4
+        val (q1, r1) = seqs.splitAt(quarter)
+        val (q2, r2) = r1.splitAt(quarter)
+        val (q3, q4) = r2.splitAt(quarter)
+        val (v1, v2, v3, v4) = parallel(
+          q1.filter(oraculo),
+          q2.filter(oraculo),
+          q3.filter(oraculo),
+          q4.filter(oraculo)
+        )
+        v1 ++ v2 ++ v3 ++ v4
+      } else {
+        seqs.filter(oraculo)
       }
     }
 
-    result.getOrElse(Seq())
-  }
+    def parallelExpand(seqs: List[Seq[Char]]): List[Seq[Char]] = {
+      if (seqs.length >= umbral) {
+        val quarter = seqs.length / 4
+        val (q1, r1) = seqs.splitAt(quarter)
+        val (q2, r2) = r1.splitAt(quarter)
+        val (q3, q4) = r2.splitAt(quarter)
+        val (x1, x2, x3, x4) = parallel(
+          expand(q1),
+          expand(q2),
+          expand(q3),
+          expand(q4)
+        )
+        x1 ++ x2 ++ x3 ++ x4
+      } else {
+        expand(seqs)
+      }
+    }
 
-  def reconstruirCadenaIngenuoPar2(n: Int, oraculo: Oraculo): Seq[Char] = {
     def loop(currentLevelSequences: List[Seq[Char]]): Seq[Char] = {
       if (currentLevelSequences.isEmpty) return Seq.empty
 
-      // Launch oracle checks in parallel
-      val (left, right) = currentLevelSequences.splitAt(currentLevelSequences.length / 2)
-      val (valid1, valid2) = parallel(
-        left.filter(oraculo),
-        right.filter(oraculo)
-      )
-      val validSequences = valid1 ++ valid2
+      val validSequences = parallelFilter(currentLevelSequences)
 
-      // Try to find the solution of the exact desired length
       validSequences.find(_.length == n) match {
         case Some(solution) => solution
         case None =>
-          val nextLevelSequences = for {
-            seq <- validSequences
-            ch <- alfabeto
-          } yield seq :+ ch
-
+          val nextLevelSequences = parallelExpand(validSequences)
           loop(nextLevelSequences)
       }
     }
 
     loop(List(Seq.empty))
   }
+ 
+  def reconstruirCadenaMejoradoPar(umbral: Int)(n: Int, oracle: Oraculo): Seq[Char] = {
+    def loop(stack: Seq[Seq[Char]]): Seq[Char] = stack match {
+      case Seq() => Seq.empty
+      case current +: rest =>
+        if (current.length == n) current
+        else {
+          val expanded = alfabeto.map(c => current :+ c)
 
+          val filtered: Seq[Seq[Char]] =
+            if (expanded.length >= umbral) {
+              val size = expanded.length / 4
+              val (q1, r1) = expanded.splitAt(size)
+              val (q2, r2) = r1.splitAt(size)
+              val (q3, q4) = r2.splitAt(size)
+
+              val (f1, f2, f3, f4) = parallel(
+                q1.filter(oracle),
+                q2.filter(oracle),
+                q3.filter(oracle),
+                q4.filter(oracle)
+              )
+              f1 ++ f2 ++ f3 ++ f4
+            } else {
+              expanded.filter(oracle)
+            }
+
+          loop(filtered ++ rest)
+        }
+    }
+
+    loop(Seq(Seq.empty))
+  }
+
+  def reconstruirCadenaMejoradoPar1(umbral: Int)(n: Int, oracle: Oraculo): Seq[Char] = {
+    @annotation.tailrec
+    def loop(stack: Seq[Seq[Char]]): Seq[Char] = stack match {
+      case Seq() => Seq.empty
+      case current +: rest =>
+        if (current.length == n) current
+        else {
+          val expanded = alfabeto.map(c => current :+ c)
+
+          val filtered: Seq[Seq[Char]] =
+            if (expanded.size >= umbral) expanded.par.filter(oracle).toList
+            else expanded.filter(oracle)
+
+          loop(filtered ++ rest)
+        }
+    }
+
+    loop(Seq(Seq.empty))
+  }
+  
   def reconstruirCadenaTurboPar(umbral: Int)(n: Int, o: Oraculo): Seq[Char] = {
     require(n > 0 && (n & (n - 1)) == 0)
 

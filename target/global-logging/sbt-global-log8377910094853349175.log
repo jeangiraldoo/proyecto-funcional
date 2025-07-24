@@ -1,0 +1,11 @@
+[debug] > Exec(;reload; set _root_.org.jetbrains.sbt.StructureKeys.sbtStructureOptions in Global := "download, resolveSourceClassifiers, insertProjectTransitiveDependencies" ;preferScala2;*/*:dumpStructureTo C:/Users/jeanp/AppData/Local/Temp/sbt-structure.xml; session clear-all ; set ideaPort in Global := 49824, None, None)
+[debug] > Exec(reload, None, None)
+[debug] > Exec(sbtStashOnFailure, None, None)
+[debug] > Exec(onFailure loadFailed, None, None)
+[debug] > Exec(loadp, None, None)
+[info] welcome to sbt 1.10.11 (BellSoft Java 21.0.7)
+[debug] Load.defaultLoad until apply took 31.6909ms
+[debug]           Load.loadUnit: plugins took 291.0767ms
+[debug]           Load.loadUnit: defsScala took 0.008ms
+[debug] [Loading] Scanning directory C:\Users\jeanp\Documents\programming\University\proyecto-funcional\project
+[debug]             Load.loadUnit: mkEval took 1.1166ms

@@ -31,10 +31,10 @@ package object ReconstCadenas {
     def loop(stack: Seq[Seq[Char]]): Seq[Char] = stack match {
       case Seq() => Seq.empty
       case current +: rest =>
-        if (current.length == n) current.reverse
+        if (current.length == n) current
         else {
           val next = alfabeto.view
-            .map(c => c +: current)
+            .map(c => current :+ c)
             .filter(oracle)
             .toSeq
           loop(next ++ rest)
