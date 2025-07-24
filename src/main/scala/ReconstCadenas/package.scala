@@ -103,65 +103,87 @@ package object ReconstCadenas {
 def reconstruirCadenaTurboAcelerada(n: Int, o: Oraculo): Seq[Char] = {
     require(n > 0 && (n & (n - 1)) == 0)
 
+    // Función recursiva principal que busca la cadena objetivo
     def buscarCadena(currentTrie: Trie, current_k: Int): Seq[Char] = {
       if (current_k == n) {
-        val posiblesCadenasFinales = obtenerCadenasDeLongitudN(currentTrie, Seq(' '), n).filter(_.length == n)
-        posiblesCadenasFinales.find(s => o(s)).getOrElse(Seq.empty)
+        // Caso base: extraer cadenas de longitud n y verificar con el oráculo
+        obtenerCadenasDeLongitudN(currentTrie, Seq.empty, n)
+          .find(o) // Función de alto orden: find con predicado
+          .getOrElse(Seq.empty)
       } else {
-        def getStringsFromTrie(t: Trie, currentPath: Seq[Char], len: Int): Set[Seq[Char]] = {
-          t match {
-            case Nodo(charNode, marcadaNode, hijos) =>
-              val newPath = if (charNode == ' ') currentPath else currentPath :+ charNode
-              hijos.flatMap(h => getStringsFromTrie(h, newPath, len)).toSet ++
-                (if (newPath.length == len && pertenece(newPath.tail, currentTrie)) Set(newPath.tail) else Set.empty)
-            case Hoja(charLeaf, marcadaLeaf) =>
-              val newPath = currentPath :+ charLeaf
-              if (newPath.length == len && pertenece(newPath.tail, currentTrie)) Set(newPath.tail) else Set.empty
-          }
-        }
-        val cadenasValidasActuales = getStringsFromTrie(currentTrie, Seq(' '), current_k)
-
+        // Caso recursivo: generar combinaciones y continuar
+        val cadenasValidasActuales = extraerCadenasDelTrie(currentTrie, current_k)
+        
+        // Uso de for-comprehension (syntactic sugar para flatMap y map)
         val combinadas = for {
           s1 <- cadenasValidasActuales.toSeq
           s2 <- cadenasValidasActuales.toSeq
           combinada = s1 ++ s2
-          if combinada.length == current_k * 2 &&
-             combinada.sliding(current_k).forall(sub => ArbolDeSufijos.pertenece(sub, currentTrie))
+          if esCombinacionValida(combinada, current_k, currentTrie)
         } yield combinada
 
-        val candidatasValidasNivelSiguiente = combinadas.filter(o)
-        val nextTrie = ArbolDeSufijos.arbolDeSufijos(candidatasValidasNivelSiguiente.toList)
-        buscarCadena(nextTrie, current_k * 2)
+        // Aplicación de funciones de alto orden en pipeline
+        val nextTrie = combinadas
+          .filter(o) // Filtrar con oráculo
+          .toList
+          .pipe(ArbolDeSufijos.arbolDeSufijos) // Construir nuevo trie
+
+        buscarCadena(nextTrie, current_k * 2) // Llamada recursiva
       }
     }
 
-    val sc1 = alfabeto.map(c => Seq(c)).filter(o)
+    // Función auxiliar para verificar si una combinación es válida
+    def esCombinacionValida(combinada: Seq[Char], k: Int, trie: Trie): Boolean = {
+      combinada.length == k * 2 &&
+      combinada.sliding(k).forall(ArbolDeSufijos.pertenece(_, trie))
+    }
+
+    // Inicialización usando funciones de alto orden
+    val sc1 = alfabeto
+      .map(Seq(_)) // map: transformar cada char en Seq[Char]
+      .filter(o)   // filter: aplicar oráculo
+
     val trieInicial = ArbolDeSufijos.arbolDeSufijos(sc1.toList)
 
-    if (n == 1) {
-      sc1.headOption.getOrElse(Seq.empty)
-    } else {
-      buscarCadena(trieInicial, 2)
+    // Pattern matching implícito en la expresión condicional
+    if (n == 1) sc1.headOption.getOrElse(Seq.empty)
+    else buscarCadena(trieInicial, 2)
+  }
+
+  // Función auxiliar que encapsula la extracción de cadenas del trie
+  private def extraerCadenasDelTrie(trie: Trie, longitud: Int): Set[Seq[Char]] = {
+    def extraerRecursivo(t: Trie, currentPath: Seq[Char]): Set[Seq[Char]] = {
+      t match {
+        case Nodo(charNode, marcadaNode, hijos) =>
+          val newPath = if (charNode == ' ') currentPath else currentPath :+ charNode
+          val resultadosHijos = hijos.flatMap(extraerRecursivo(_, newPath)).toSet
+          val resultadoActual = Option.when(
+            newPath.length == longitud && marcadaNode && charNode != ' '
+          )(newPath).toSet
+          resultadosHijos ++ resultadoActual
+          
+        case Hoja(charLeaf, marcadaLeaf) =>
+          val newPath = currentPath :+ charLeaf
+          Option.when(newPath.length == longitud && marcadaLeaf)(newPath).toSet
+      }
     }
+    extraerRecursivo(trie, Seq.empty)
   }
 
   private def obtenerCadenasDeLongitudN(t: Trie, currentPath: Seq[Char], targetLength: Int): List[Seq[Char]] = {
     t match {
       case Nodo(charNode, marcadaNode, hijos) =>
         val newPath = if (charNode == ' ') currentPath else currentPath :+ charNode
-        if (newPath.length == targetLength && marcadaNode) {
-          List(newPath.tail) ++ hijos.flatMap(h => obtenerCadenasDeLongitudN(h, newPath, targetLength))
-        } else {
-          hijos.flatMap(h => obtenerCadenasDeLongitudN(h, newPath, targetLength))
-        }
+        val fromChildren = hijos.flatMap(h => obtenerCadenasDeLongitudN(h, newPath, targetLength))
+        val currentResult = if (newPath.length == targetLength && marcadaNode && charNode != ' ') List(newPath) else List.empty
+        currentResult ++ fromChildren
       case Hoja(charLeaf, marcadaLeaf) =>
         val newPath = currentPath :+ charLeaf
         if (newPath.length == targetLength && marcadaLeaf) {
-          List(newPath.tail)
+          List(newPath)
         } else {
           List.empty
         }
     }
   }
-}  
 }
