@@ -104,83 +104,43 @@ package object ReconstCadenas {
     require(n > 0 && (n & (n - 1)) == 0)
 
     @annotation.tailrec
-    def buscarCadena(currentTrie: Trie, current_k: Int): Seq[Char] = {
+    def buscarCadena(cadenasValidasActuales: List[Seq[Char]], current_k: Int): Seq[Char] = {
       if (current_k == n) {
-        obtenerCadenasDeLongitudN(currentTrie, Seq.empty, n)
-          .find(o)
+        // Buscar directamente en las cadenas válidas una que tenga longitud n
+        cadenasValidasActuales
+          .find(cadena => cadena.length == n && o(cadena))
           .getOrElse(Seq.empty)
       } else {
-        val cadenasValidasActuales = extraerCadenasDelTrie(currentTrie, current_k)
-        
+        // Combinar todas las cadenas válidas actuales entre sí
         val combinadas = for {
-          s1 <- cadenasValidasActuales.toSeq
-          s2 <- cadenasValidasActuales.toSeq
+          s1 <- cadenasValidasActuales
+          s2 <- cadenasValidasActuales
           combinada = s1 ++ s2
-          if esCombinacionValida(combinada, current_k, currentTrie)
+          if esCombinacionValida(combinada, current_k, cadenasValidasActuales)
         } yield combinada
 
+        // Filtrar solo las combinaciones que el oráculo considera válidas
         val candidatosValidos = combinadas
           .filter(o)
-          .toList
+          .distinct
 
-        val nextTrie = ArbolSufijos.arbolDeSufijos(candidatosValidos)
-
-        buscarCadena(nextTrie, current_k * 2)
+        buscarCadena(candidatosValidos, current_k * 2)
       }
     }
 
-    def esCombinacionValida(combinada: Seq[Char], k: Int, trie: Trie): Boolean = {
+    def esCombinacionValida(combinada: Seq[Char], k: Int, cadenasValidas: List[Seq[Char]]): Boolean = {
+      // Verificar que la longitud sea correcta y que todas las subcadenas de longitud k estén en la lista válida
       combinada.length == k * 2 &&
-      combinada.sliding(k).forall(ArbolSufijos.pertenece(_, trie))
+      combinada.sliding(k).forall(subcadena => cadenasValidas.contains(subcadena))
     }
 
+    // Obtener las cadenas iniciales de longitud 1 que son válidas según el oráculo
     val sc1 = alfabeto
       .map(Seq(_))
       .filter(o)
-
-    val trieInicial = ArbolSufijos.arbolDeSufijos(sc1.toList)
+      .toList
 
     if (n == 1) sc1.headOption.getOrElse(Seq.empty)
-    else buscarCadena(trieInicial, 2)
-  }
-
-  private def extraerCadenasDelTrie(trie: Trie, longitud: Int): Set[Seq[Char]] = {
-    def extraerRecursivo(t: Trie, currentPath: Seq[Char]): Set[Seq[Char]] = {
-      t match {
-        case Nodo(charNode, marcadaNode, hijos) =>
-          val newPath = if (charNode == ' ') currentPath else currentPath :+ charNode
-          val resultadosHijos = hijos.flatMap(extraerRecursivo(_, newPath)).toSet
-          val resultadoActual = Option.when(
-            newPath.length == longitud && marcadaNode && charNode != ' '
-          )(newPath).toSet
-          resultadosHijos ++ resultadoActual
-          
-        case Hoja(charLeaf, marcadaLeaf) =>
-          val newPath = currentPath :+ charLeaf
-          Option.when(newPath.length == longitud && marcadaLeaf)(newPath).toSet
-      }
-    }
-    extraerRecursivo(trie, Seq.empty)
-  }
-
-  private def obtenerCadenasDeLongitudN(t: Trie, currentPath: Seq[Char], targetLength: Int): List[Seq[Char]] = {
-    t match {
-      case Nodo(charNode, marcadaNode, hijos) =>
-        val newPath = if (charNode == ' ') currentPath else currentPath :+ charNode
-        val fromChildren = hijos.flatMap(h => obtenerCadenasDeLongitudN(h, newPath, targetLength))
-        val currentResult = if (newPath.length == targetLength && marcadaNode && charNode != ' ') 
-          List(newPath) 
-        else 
-          List.empty
-        currentResult ++ fromChildren
-        
-      case Hoja(charLeaf, marcadaLeaf) =>
-        val newPath = currentPath :+ charLeaf
-        if (newPath.length == targetLength && marcadaLeaf) {
-          List(newPath)
-        } else {
-          List.empty
-        }
-    }
-  }
+    else buscarCadena(sc1, 2)
+}
 }
