@@ -1,29 +1,10 @@
-[debug] Created transactional ClassFileManager with tempDir = C:\Users\jeanp\Documents\programming\University\proyecto-funcional\target\scala-3.3.6\classes.bak
-[debug] About to delete class files:
-[debug] 	package$.class
-[debug] 	package.class
-[debug] 	package$.class
-[debug] 	package.class
-[debug] 	package$.tasty
-[debug] 	package.tasty
-[debug] 	package$.tasty
-[debug] 	package.tasty
-[debug] We backup class files:
-[debug] 	package$.class
-[debug] 	package.class
-[debug] 	package$.class
-[debug] 	package.class
-[debug] 	package$.tasty
-[debug] 	package.tasty
-[debug] 	package$.tasty
-[debug] 	package.tasty
-[debug] Registering generated classes:
-[debug] 	package$.class
-[debug] 	package.class
-[debug] 	package$.class
-[debug] 	package.class
-[debug] 	package$.tasty
-[debug] 	package.tasty
-[debug] 	package$.tasty
-[debug] 	package.tasty
-[debug] Removing the temporary directory used for backing up class files: C:\Users\jeanp\Documents\programming\University\proyecto-funcional\target\scala-3.3.6\classes.bak
+[0m[[0m[0mdebug[0m] [0m[0mCreated transactional ClassFileManager with tempDir = C:\Users\Owner\Desktop\hola\target\scala-2.13\classes.bak[0m
+[0m[[0m[0mdebug[0m] [0m[0mAbout to delete class files:[0m
+[0m[[0m[0mdebug[0m] [0m[0mWe backup class files:[0m
+[0m[[0m[0mdebug[0m] [0m[0mCreated transactional ClassFileManager with tempDir = C:\Users\Owner\Desktop\hola\target\scala-2.13\classes.bak[0m
+[0m[[0m[0mdebug[0m] [0m[0mAbout to delete class files:[0m
+[0m[[0m[0mdebug[0m] [0m[0mWe backup class files:[0m
+[0m[[0m[0mdebug[0m] [0m[0mRolling back changes to class files.[0m
+[0m[[0m[0mdebug[0m] [0m[0mRemoving generated classes:[0m
+[0m[[0m[0mdebug[0m] [0m[0mRestoring class files: [0m
+[0m[[0m[0mdebug[0m] [0m[0mRemoving the temporary directory used for backing up class files: C:\Users\Owner\Desktop\hola\target\scala-2.13\classes.bak[0m

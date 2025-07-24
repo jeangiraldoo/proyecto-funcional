@@ -164,4 +164,4 @@ def reconstruirCadenaTurboAcelerada(n: Int, o: Oraculo): Seq[Char] = {
     }
   }
 }  
-}
+

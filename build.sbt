@@ -5,9 +5,10 @@ lazy val root = (project in file("."))
   .settings(
     name := "proyecto-funcional",
     libraryDependencies ++= Seq(
-      "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4",
-      "io.github.hughsimpson" %% "scalameter" % "0.22.1" % Test
-    ),
+      ("com.storm-enroute" %% "scalameter-core" % "0.21").cross(CrossVersion.for3Use2_13),
+      "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.3",
+      "org.scalameta" %% "munit" % "0.7.26"%Test,
+),
     javaOptions ++= Seq(
       "-Xmx8G",
       "-XX:-UseGCOverheadLimit",
