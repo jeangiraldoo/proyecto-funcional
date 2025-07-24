@@ -63,7 +63,7 @@ package object ReconstCadenasPar {
 
     loop(List(Seq.empty))
   }
- 
+
   def reconstruirCadenaMejoradoPar(umbral: Int)(n: Int, oracle: Oraculo): Seq[Char] = {
     def loop(stack: Seq[Seq[Char]]): Seq[Char] = stack match {
       case Seq() => Seq.empty
