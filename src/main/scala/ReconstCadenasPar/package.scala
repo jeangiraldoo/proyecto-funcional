@@ -1,6 +1,8 @@
 import Oraculo._
 import Common._
 import scala.collection.parallel.CollectionConverters._
+import ArbolSufijos._
+
 
 package object ReconstCadenasPar {
   val alfabeto = Seq('a', 'c', 'g', 't')
@@ -201,4 +203,51 @@ package object ReconstCadenasPar {
     // Iniciar construcción recursiva con longitud 1
     construirRecursivamente(conjuntoInicial, 1).toList
   }
+
+  def reconstruirCadenaTurboAceleradaPar(umbral: Int)(n: Int, o: Oraculo): Seq[Char] = {
+    require(n > 0 && (n & (n - 1)) == 0, "n debe ser potencia de 2 y mayor que 0")
+
+    var sc: Seq[Seq[Char]] = alfabeto.map(c => Seq(c)).filter(o)
+    if (n == 1) return sc.head
+
+    var k = 2
+    while (k <= n) {
+      val tree = arbolDeSufijos(sc)
+
+      // Decide si hacer combinación paralela o no
+      val combinadas = {
+        val combinaciones = for {
+          s1 <- sc
+          s2 <- sc
+        } yield s1 ++ s2
+
+        // FILTRAR combinaciones que estén en el árbol
+        val filtradas = if (sc.size > umbral) {
+          combinaciones.par.filter(comb => comb.sliding(k / 2).forall(sub => pertenece(sub.toSeq, tree))).toList
+        } else {
+          combinaciones.filter(comb => comb.sliding(k / 2).forall(sub => pertenece(sub.toSeq, tree)))
+        }
+        filtradas
+      }
+
+      val validas = if (sc.size > umbral) {
+        combinadas.par.filter(o).toList
+      } else {
+        combinadas.filter(o)
+      }
+
+      validas.find(_.length == n) match {
+        case Some(sol) => return sol
+        case None => sc = validas
+      }
+      k *= 2
+    }
+
+    Seq.empty
+  }
+}
+
+  
+  
+
 }
