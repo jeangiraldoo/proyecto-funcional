@@ -100,33 +100,32 @@ package object ReconstCadenas {
     construirCadena(subcadenasInicialesValidas, 1).toList
 }
 
-def reconstruirCadenaTurboAcelerada(n: Int, o: Oraculo): Seq[Char] = {
+  def reconstruirCadenaTurboAcelerada(n: Int, o: Oraculo): Seq[Char] = {
     require(n > 0 && (n & (n - 1)) == 0, "n debe ser potencia de 2 y mayor que 0")
-    // SC1
-    var sc: Seq[Seq[Char]] = alfabeto.map(c => Seq(c)).filter(o)
-    if (n == 1) return sc.head
 
-    var k = 2
-    while (k <= n) {
-      // construye árbol de sufijos de las cadenas actuales SC
-      val tree = arbolDeSufijos(sc)
-      // Filtrar combinaciones válidas usando tree para evitar subcadenas inválidas
-      val combinadas = for {
-        s1 <- sc
-        s2 <- sc
-        comb = s1 ++ s2
-        // cada subcadena de longitud k/2 debe pertenecer al árbol
-        if comb.sliding(k / 2).forall(sub => pertenece(sub.toSeq, tree))
-      } yield comb
-      // consultar oráculo para validar
-      val validas = combinadas.filter(o)
-      // si llegamos a la longitud deseada, devolver solución
-      validas.find(_.length == n) match {
-        case Some(sol) => return sol
-        case None => sc = validas
+    @tailrec
+    def reconstruirRec(sc: Seq[Seq[Char]], k: Int): Seq[Char] = {
+      if (k > n) {
+        Seq.empty
+      } else {
+        val tree = arbolDeSufijos(sc)
+        val combinadas = for {
+          s1 <- sc
+          s2 <- sc
+          comb = s1 ++ s2
+          if comb.sliding(k / 2).forall(sub => pertenece(sub.toSeq, tree))
+        } yield comb
+
+        val validas = combinadas.filter(o)
+
+        validas.find(_.length == n) match {
+          case Some(sol) => sol
+          case None => reconstruirRec(validas, k * 2)
+        }
       }
-      k *= 2
     }
-    Seq.empty
+
+    val sc = alfabeto.map(c => Seq(c)).filter(o)
+    if (n == 1) sc.head else reconstruirRec(sc, 2)
   }
 }

@@ -207,47 +207,47 @@ package object ReconstCadenasPar {
   def reconstruirCadenaTurboAceleradaPar(umbral: Int)(n: Int, o: Oraculo): Seq[Char] = {
     require(n > 0 && (n & (n - 1)) == 0, "n debe ser potencia de 2 y mayor que 0")
 
-    var sc: Seq[Seq[Char]] = alfabeto.map(c => Seq(c)).filter(o)
-    if (n == 1) return sc.head
+    @tailrec
+    def reconstruirRec(sc: Seq[Seq[Char]], k: Int): Seq[Char] = {
+      if (k > n) {
+        Seq.empty
+      } else {
+        val tree = arbolDeSufijos(sc)
+        val useParallel = sc.size > umbral
 
-    var k = 2
-    while (k <= n) {
-      val tree = arbolDeSufijos(sc)
-
-      // Decide si hacer combinación paralela o no
-      val combinadas = {
         val combinaciones = for {
           s1 <- sc
           s2 <- sc
         } yield s1 ++ s2
 
-        // FILTRAR combinaciones que estén en el árbol
-        val filtradas = if (sc.size > umbral) {
-          combinaciones.par.filter(comb => comb.sliding(k / 2).forall(sub => pertenece(sub.toSeq, tree))).toList
+        val filtradas = if (useParallel) {
+          combinaciones.par.filter(comb =>
+            comb.sliding(k / 2).forall(sub => pertenece(sub.toSeq, tree))
+          ).seq
         } else {
-          combinaciones.filter(comb => comb.sliding(k / 2).forall(sub => pertenece(sub.toSeq, tree)))
+          combinaciones.filter(comb =>
+            comb.sliding(k / 2).forall(sub => pertenece(sub.toSeq, tree))
+          )
         }
-        filtradas
-      }
 
-      val validas = if (sc.size > umbral) {
-        combinadas.par.filter(o).toList
-      } else {
-        combinadas.filter(o)
-      }
+        val validas = if (useParallel) {
+          filtradas.par.filter(o).seq
+        } else {
+          filtradas.filter(o)
+        }
 
-      validas.find(_.length == n) match {
-        case Some(sol) => return sol
-        case None => sc = validas
+        validas.find(_.length == n) match {
+          case Some(sol) => sol
+          case None => reconstruirRec(validas, k * 2)
+        }
       }
-      k *= 2
     }
 
-    Seq.empty
+    val sc = alfabeto.map(c => Seq(c)).filter(o)
+    if (n == 1) sc.head else reconstruirRec(sc, 2)
   }
-}
 
-  
-  
+
+
 
 }
