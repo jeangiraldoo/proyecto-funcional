@@ -100,47 +100,33 @@ package object ReconstCadenas {
     construirCadena(subcadenasInicialesValidas, 1).toList
 }
 
-  def reconstruirCadenaTurboAcelerada(n: Int, o: Oraculo): Seq[Char] = {
-    require(n > 0 && (n & (n - 1)) == 0)
+def reconstruirCadenaTurboAcelerada(n: Int, o: Oraculo): Seq[Char] = {
+    require(n > 0 && (n & (n - 1)) == 0, "n debe ser potencia de 2 y mayor que 0")
+    // SC1
+    var sc: Seq[Seq[Char]] = alfabeto.map(c => Seq(c)).filter(o)
+    if (n == 1) return sc.head
 
-    @annotation.tailrec
-    def buscarCadena(cadenasValidasActuales: List[Seq[Char]], current_k: Int): Seq[Char] = {
-      if (current_k == n) {
-        // Buscar directamente en las cadenas válidas una que tenga longitud n
-        cadenasValidasActuales
-          .find(cadena => cadena.length == n && o(cadena))
-          .getOrElse(Seq.empty)
-      } else {
-        // Combinar todas las cadenas válidas actuales entre sí
-        val combinadas = for {
-          s1 <- cadenasValidasActuales
-          s2 <- cadenasValidasActuales
-          combinada = s1 ++ s2
-          if esCombinacionValida(combinada, current_k, cadenasValidasActuales)
-        } yield combinada
-
-        // Filtrar solo las combinaciones que el oráculo considera válidas
-        val candidatosValidos = combinadas
-          .filter(o)
-          .distinct
-
-        buscarCadena(candidatosValidos, current_k * 2)
+    var k = 2
+    while (k <= n) {
+      // construye árbol de sufijos de las cadenas actuales SC
+      val tree = arbolDeSufijos(sc)
+      // Filtrar combinaciones válidas usando tree para evitar subcadenas inválidas
+      val combinadas = for {
+        s1 <- sc
+        s2 <- sc
+        comb = s1 ++ s2
+        // cada subcadena de longitud k/2 debe pertenecer al árbol
+        if comb.sliding(k / 2).forall(sub => pertenece(sub.toSeq, tree))
+      } yield comb
+      // consultar oráculo para validar
+      val validas = combinadas.filter(o)
+      // si llegamos a la longitud deseada, devolver solución
+      validas.find(_.length == n) match {
+        case Some(sol) => return sol
+        case None => sc = validas
       }
+      k *= 2
     }
-
-    def esCombinacionValida(combinada: Seq[Char], k: Int, cadenasValidas: List[Seq[Char]]): Boolean = {
-      // Verificar que la longitud sea correcta y que todas las subcadenas de longitud k estén en la lista válida
-      combinada.length == k * 2 &&
-      combinada.sliding(k).forall(subcadena => cadenasValidas.contains(subcadena))
-    }
-
-    // Obtener las cadenas iniciales de longitud 1 que son válidas según el oráculo
-    val sc1 = alfabeto
-      .map(Seq(_))
-      .filter(o)
-      .toList
-
-    if (n == 1) sc1.headOption.getOrElse(Seq.empty)
-    else buscarCadena(sc1, 2)
-}
+    Seq.empty
+  }
 }
